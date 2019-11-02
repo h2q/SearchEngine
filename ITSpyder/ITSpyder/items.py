@@ -16,4 +16,3 @@ class ItspyderItem(scrapy.Item):
     url = scrapy.Field()
     url_object_id = scrapy.Field()
     content = scrapy.Field()
-    crawl_time = scrapy.Field()

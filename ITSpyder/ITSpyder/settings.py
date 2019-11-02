@@ -66,6 +66,7 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'ITSpyder.pipelines.ItspyderPipeline': 300,
+    'ITSpyder.pipelines.MysqlTwistedPipeline': 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -88,3 +89,9 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+MYSQL_HOST = "127.0.0.1"
+MYSQL_DBNAME = "search"
+MYSQL_USER = "root"
+MYSQL_PASSWORD = "hyy.98"
+SQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M"
+SQL_DATE_FORMAT = "%Y-%m-%d %H:%M"

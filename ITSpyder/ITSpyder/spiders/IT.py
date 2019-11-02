@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from ITSpyder.items import ItspyderItem
-
+from ITSpyder.settings import SQL_DATETIME_FORMAT
+import datetime
+from ITSpyder.utils.url_id import get_md5
 class ItSpider(scrapy.Spider):
     name = 'IT'
     allowed_domains = ['cec.jmu.edu.cn']
@@ -37,8 +39,10 @@ class ItSpider(scrapy.Spider):
             if "http" not in menu and "index" not in menu:
                 menu = self.url+menu
                 all_menus.append(menu)
+
         for other_url in self.other_urls:
             all_menus.append(other_url)
+
         all_menus = set(all_menus)
         for menu in all_menus:
             yield scrapy.Request(url=menu, callback=self.parse_info)
@@ -67,8 +71,18 @@ class ItSpider(scrapy.Spider):
         selector = scrapy.Selector(response)
         item = ItspyderItem()
         print(111)
-        title = selector.xpath("//td[@class='titlestyle124904']/text()").extract()[0]
+        title = selector.xpath("//title/text()").extract()[0]
         time = selector.xpath("//span[@class='timestyle124904']/text()").extract()[0]
+        url = response.url
+        content1 = selector.css("form[name='form124904a'] *:not(style)::text").extract()
+        content2 = "".join(content1).replace(u'\r\n', '').replace(u'\xa0', u'').replace(' ', '').replace('\'',
+                                                                                                         '').replace(
+            '\"', '')
+        time = "".join(time).replace('                 ', '')
         item['title'] = title
         item['time'] = time
-        return [item]
+        item['content'] = content2
+        item['url'] = url
+        item['url_object_id'] = get_md5(response.url)
+        item['time'] = datetime.datetime.now().strftime(SQL_DATETIME_FORMAT)
+        yield item
