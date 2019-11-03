@@ -16,9 +16,9 @@ class ItspyderPipeline(object):
             fp.write(item['title']+'  ' + item['time']+'\n'
                      + item['url']+' '+item['content']+'\n')
             fp.close()
-        return item
         '''
-        pass
+        return item
+
 
 
 class MysqlTwistedPipeline(object):
