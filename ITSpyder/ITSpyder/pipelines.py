@@ -8,6 +8,7 @@ from twisted.enterprise import adbapi
 import MySQLdb
 import MySQLdb.cursors
 
+
 class ItspyderPipeline(object):
 
     def process_item(self, item, spider):
@@ -57,7 +58,7 @@ class MysqlTwistedPipeline(object):
 
     @staticmethod
     def do_insert(cursor, item):
-        insert_sql = 'insert into it VALUES(%s,%s,%s,%s,%s)'
+        insert_sql = 'insert into it VALUES(%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE crawl_time=VALUES(crawl_time)'
         #try:
         print("开始插入数据")
         print(item['title'])

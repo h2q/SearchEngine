@@ -84,5 +84,5 @@ class ItSpider(scrapy.Spider):
         item['content'] = content2
         item['url'] = url
         item['url_object_id'] = get_md5(response.url)
-        item['time'] = datetime.datetime.now().strftime(SQL_DATETIME_FORMAT)
+        # item['time'] = datetime.datetime.now().strftime(SQL_DATETIME_FORMAT)
         yield item
