@@ -80,7 +80,7 @@ class SearchView(View):
             )
         elif s_type == "marine":
             response = client.search(
-                index="marine",
+                index="marine_blog",
                 request_timeout=60,
                 body={
                     "query": {
@@ -101,7 +101,29 @@ class SearchView(View):
                     }
                 }
             )
-
+        elif s_type == "art":
+            response = client.search(
+                index="art_blog",
+                request_timeout=60,
+                body={
+                    "query": {
+                        "multi_match": {
+                            "query": key_words,
+                            "fields": ["tags", "title", "content"]
+                        }
+                    },
+                    "from": (page - 1) * 10,
+                    "size": 10,
+                    "highlight": {
+                        "pre_tags": ['<span class="keyWord">'],
+                        "post_tags": ['</span>'],
+                        "fields": {
+                            "title": {},
+                            "content": {},
+                        }
+                    }
+                }
+            )
         elif s_type == "_all":
             response = client.search(
                 index="_all",
@@ -169,6 +191,26 @@ class SearchView(View):
                     hit_dict["url"] = hit["_source"]["url"]
                     hit_dict["score"] = hit["_score"]
                     hit_dict["source_site"] = "轮机工程学院"
+                    hit_list.append(hit_dict)
+                except:
+                    error_nums = error_nums + 1
+        elif s_type == "art":
+            for hit in response["hits"]["hits"]:
+                hit_dict = {}
+                try:
+                    if "title" in hit["highlight"]:
+                        hit_dict["title"] = "".join(hit["highlight"]["title"])
+                    else:
+                        hit_dict["title"] = hit["_source"]["title"]
+                    if "content" in hit["highlight"]:
+                        hit_dict["content"] = "".join(
+                            hit["highlight"]["content"])
+                    else:
+                        hit_dict["content"] = hit["_source"]["content"][:200]
+
+                    hit_dict["url"] = hit["_source"]["url"]
+                    hit_dict["score"] = hit["_score"]
+                    hit_dict["source_site"] = "美术学院"
                     hit_list.append(hit_dict)
                 except:
                     error_nums = error_nums + 1
