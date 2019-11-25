@@ -9,6 +9,7 @@ from datetime import datetime
 import redis
 from elasticsearch import Elasticsearch
 from django.views.generic.base import RedirectView
+from search.models import ITIndex
 
 client = Elasticsearch(hosts=["localhost"])
 
@@ -36,6 +37,24 @@ class SearchSuggest(View):
         key_words = request.GET.get('s', '')
         current_type = request.GET.get('s_type', '')
 
+        if current_type == "it":
+            return_suggest_list = []
+            if key_words:
+                s = ITIndex.search()
+                """fuzzy模糊搜索, fuzziness 编辑距离, prefix_length前面不变化的前缀长度"""
+                s = s.suggest('my_suggest', key_words, completion={
+                    "field": "suggest", "fuzzy": {
+                        "fuzziness": 2
+                    },
+                    "size": 10
+                })
+                suggestions = s.execute()
+                for match in suggestions.suggest.my_suggest[0].options[:10]:
+                    source = match._source
+                    return_suggest_list.append(source["title"])
+            return HttpResponse(
+                json.dumps(return_suggest_list),
+                content_type="application/json")
 
 class SearchView(View):
 
@@ -45,7 +64,14 @@ class SearchView(View):
         # 通用部分
         # 实现搜索关键词keyword加1操作
         redis_cli.zincrby("search_keywords_set", key_words)
-
+        #获取topn关键字
+        # topn_search_clean = []
+        # topn_search = redis_cli.zrevrangebyscore(
+        #     "search_keywords_set", "+inf", "-inf", start=0, num=5)
+        # for topn_key in topn_search:
+        #     topn_key = str(topn_key, encoding="utf-8")
+        #     topn_search_clean.append(topn_key)
+        # topn_search = topn_search_clean
         # 当前要获取第几页的数据
         page = request.GET.get("p", "1")
         try:

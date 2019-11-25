@@ -5,7 +5,7 @@
 <meta name="baidu-site-verification" content="nPxypLjNNn" />
 <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>抢救一下，还能战斗</title>
+<title>搜什么搜</title>
 
  <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 <link rel="stylesheet" type="text/css" href="../static/css/index.css">
@@ -139,6 +139,7 @@
             	<ul class="searchList">
 					<li class="searchItem current" data-type="it">计算机工程学院</li>
                     <li class="searchItem" data-type="marine">轮机工程学院</li>
+                    <li class="searchItem" data-type="art">美术学院</li>
                     <li class="searchItem" data-type="_all">所有学院</li>
                 </ul>
             </div>
@@ -182,26 +183,26 @@
 
 
 
-    <div  class="historyArea">
-       <div class="box2" id="movie_rank">
-        <h2>
-            <a href="#" class="more">更多</a>源码排行</h2>
-        <div class="inner">
-            <ul class="rank_list">
-                <li class="top3"><em>1</em><a href="#">aaaaaaaaaaaaaaaaaaaaaaaa</a></li>
-                <li class="top3"><em>2</em><a href="#">aaaaaaaaaaaaaaaaaaaaaaaa</a></li>
-                <li class="top3"><em>3</em><a href="#">aaaaaaaaaaaaaaaaaaaaaaaa</a></li>
-                <li><em>4</em><a href="#">ssssssssssssssssss</a></li>
-                <li><em>5</em><a href="#">ssssssssssssssssss</a></li>
-                <li><em>6</em><a href="#">ssssssssssssssssss</a></li>
-                <li><em>7</em><a href="#">ssssssssssssssssss</a></li>
-                <li><em>8</em><a href="#">ssssssssssssssssss</a></li>
-                <li><em>9</em><a href="#">ssssssssssssssssss</a></li>
-                <li><em>10</em><a href="#">ssssssssssssssssss</a></li>
-            </ul>
-        </div>
-    </div>
-   </div>
+{#    <div  class="historyArea">#}
+{#       <div class="box2" id="movie_rank">#}
+{#        <h2>#}
+{#            <a href="#" class="more">更多</a>源码排行</h2>#}
+{#        <div class="inner">#}
+{#            <ul class="rank_list">#}
+{#                <li class="top3"><em>1</em><a href="#">aaaaaaaaaaaaaaaaaaaaaaaa</a></li>#}
+{#                <li class="top3"><em>2</em><a href="#">aaaaaaaaaaaaaaaaaaaaaaaa</a></li>#}
+{#                <li class="top3"><em>3</em><a href="#">aaaaaaaaaaaaaaaaaaaaaaaa</a></li>#}
+{#                <li><em>4</em><a href="#">ssssssssssssssssss</a></li>#}
+{#                <li><em>5</em><a href="#">ssssssssssssssssss</a></li>#}
+{#                <li><em>6</em><a href="#">ssssssssssssssssss</a></li>#}
+{#                <li><em>7</em><a href="#">ssssssssssssssssss</a></li>#}
+{#                <li><em>8</em><a href="#">ssssssssssssssssss</a></li>#}
+{#                <li><em>9</em><a href="#">ssssssssssssssssss</a></li>#}
+{#                <li><em>10</em><a href="#">ssssssssssssssssss</a></li>#}
+{#            </ul>#}
+{#        </div>#}
+{#    </div>#}
+{#   </div>#}
 
 
 
@@ -241,6 +242,34 @@
       }
     }
    
+  // 搜索建议
+    $(function(){
+        $('.searchInput').bind(' input propertychange ',function(){
+            var searchText = $(this).val();
+            var tmpHtml = ""
+            var datatype=$(".searchItem.current").attr('data-type')
+            $.ajax({
+                cache: false,
+                type: 'get',
+                dataType:'json',
+                url:suggest_url+"?s="+searchText+"&s_type="+$(".searchItem.current").attr('data-type'),
+                async: true,
+                success: function(data) {
+                    for (var i=0;i<data.length;i++){
+                          tmpHtml += '<li><a href="'+search_url+'?q='+data[i]+'&s_type='+datatype+'">'+data[i]+'</a></li>'
+                    }
+                    $(".dataList").html("")
+                    $(".dataList").append(tmpHtml);
+                    if (data.length == 0){
+                        $('.dataList').hide()
+                    }else {
+                        $('.dataList').show()
+                    }
+                }
+            });
+        } );
+    })
+
 
     hideElement($('.dataList'), $('.searchInput'));
 
