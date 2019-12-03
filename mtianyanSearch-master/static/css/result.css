@@ -6,10 +6,13 @@ html{*overflow:auto;}
 /*input搜索区域*/
 .inputArea{float:left;position:relative;}
 .inputArea .searchInput{border:1px solid #bfbfbf;padding:0 15px;outline:none;height:35px;*line-height:35px;width:350px; background:url(../images/inputbg.png);font-size:14px;}
-.inputArea .searchButton{position:absolute;left:382px;top:0;*top:1px;*left:381px;width:106px;height:38px;background:url(../images/btn_min.png) no-repeat;border:none;cursor:pointer;}
+.inputArea .searchButton{position:absolute;left:382px;top:0;*top:1px;*left:381px;width:106px;height:38px;background:url(../images/searchbtn.png) no-repeat;border:none;cursor:pointer;}
 
 /*返回高级搜索*/
 .inputArea .advanced{position:absolute;font-size:14px;left:500px;top:12px;width:60px;text-decoration:underline;}
+
+.preparation{position:absolute;font-size:14px;left:650px;top:30px;width:60px;text-decoration:underline;}
+
 
 /*分界区域，导航*/
 .nav{margin-bottom:24px;height:31px;background:#f9f9f9;border-bottom:1px solid #e0e0e0;padding:5px 0 0 210px;}
@@ -68,6 +71,7 @@ html{*overflow:auto;}
 
 /*搜索内容主体*/
 .resultArea .resultList .itemBody{margin-bottom:5px;line-height:18px;width:90%;}
+.resultArea .resultList .itemBody{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;(这里是行数 你可以控制你想在第几行末尾多余的显示省略号，之前的文本正常显示)}
 .resultArea .resultList .itemFoot{color:#41D1B4;}
 .resultArea .resultList .itemFoot .info{margin-right:10px;}
 
