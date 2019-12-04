@@ -1,11 +1,10 @@
-
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>抢救一下，我知道了</title>
+<title>搜什么搜-搜出来了吧</title>
 
 <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 <link rel="stylesheet" type="text/css" href="../static/css/result.css">
@@ -22,9 +21,16 @@
     </div>
     <div class="nav">
     	<ul class="searchList">
-            <li class="searchItem {% ifequal s_type "it" %}current{% endifequal %}" data-type="it">计算机工程学院</li>
-            <li class="searchItem {% ifequal s_type "marine" %}current{% endifequal %}" data-type="marine">轮机工程学院</li>
-            <li class="searchItem {% ifequal s_type "_all" %}current{% endifequal %}" data-type="_all">所有学院</li>
+            <li class="searchItem {% ifequal s_type "it" %}current{% endifequal %}" data-type="it"><a href="javascript:add_search();">计算机工程学院</a></li>
+            <li class="searchItem {% ifequal s_type "marine" %}current{% endifequal %}" data-type="marine"><a href="javascript:add_search();">轮机工程学院</a></li>
+            <li class="searchItem {% ifequal s_type "art" %}current{% endifequal %}" data-type="art"><a href="javascript:add_search();">美术学院</a></li>
+           <li class="searchItem {% ifequal s_type "foreign" %}current{% endifequal %}" data-type="foreign"><a href="javascript:add_search();">外国语学院</a></li>
+        <li class="searchItem {% ifequal s_type "PE" %}current{% endifequal %}" data-type="PE"><a href="javascript:add_search();">体育学院</a></li>
+            <li class="searchItem {% ifequal s_type "ms" %}current{% endifequal %}" data-type="ms"><a href="javascript:add_search();">工商学院</a></li>
+            <li class="searchItem {% ifequal s_type "nav" %}current{% endifequal %}" data-type="nav"><a href="javascript:add_search();">航海学院</a></li>
+           <li class="searchItem {% ifequal s_type "mc" %}current{% endifequal %}" data-type="mc"><a href="javascript:add_search();">音乐学院</a></li>
+          <li class="searchItem {% ifequal s_type "cj" %}current{% endifequal %}" data-type="cj"><a href="javascript:add_search();">财经学院</a></li>
+            <li class="searchItem {% ifequal s_type "_all" %}current{% endifequal %}" data-type="_all"><a href="javascript:add_search();">所有学院</a></li>
         </ul>
     </div>
 	<div id="bd" class="ue-clear">
@@ -51,7 +57,8 @@
                                 <span class="divsion">-</span>
                                 
                             </div>
-                            <div class="itemBody">{% autoescape off %}{{ hits.content }}{% endautoescape %}</div>
+{#                        style="width:800px; height:50px;"#}
+                            <div class="itemBody"   >{% autoescape off %}{{ hits.content }}{% endautoescape %}</div>
                            
                         </div>
                     {% endfor %}
