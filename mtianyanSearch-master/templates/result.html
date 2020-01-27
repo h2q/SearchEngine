@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>搜什么搜-搜出来了吧</title>
 
+{#    <link href="{% static 'css/index.css'%}" rel="stylesheet" type="text/css" />#}
 <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 <link rel="stylesheet" type="text/css" href="../static/css/result.css">
 
@@ -17,20 +18,27 @@
         <div class="inputArea">
         	<input type="text" class="searchInput" value="{{ key_words }}"/>
             <input type="button" class="searchButton" onclick="add_search()"/>
+            <ul class="dataList">
+                	<li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
         </div>
     </div>
     <div class="nav">
     	<ul class="searchList">
-            <li class="searchItem {% ifequal s_type "it" %}current{% endifequal %}" data-type="it"><a href="javascript:add_search();">计院</a></li>
-            <li class="searchItem {% ifequal s_type "marine" %}current{% endifequal %}" data-type="marine"><a href="javascript:add_search();">轮机</a></li>
-            <li class="searchItem {% ifequal s_type "art" %}current{% endifequal %}" data-type="art"><a href="javascript:add_search();">美院</a></li>
-           <li class="searchItem {% ifequal s_type "foreign" %}current{% endifequal %}" data-type="foreign"><a href="javascript:add_search();">外院</a></li>
-        <li class="searchItem {% ifequal s_type "PE" %}current{% endifequal %}" data-type="PE"><a href="javascript:add_search();">体院</a></li>
-            <li class="searchItem {% ifequal s_type "ms" %}current{% endifequal %}" data-type="ms"><a href="javascript:add_search();">工商</a></li>
-            <li class="searchItem {% ifequal s_type "nav" %}current{% endifequal %}" data-type="nav"><a href="javascript:add_search();">航海</a></li>
-           <li class="searchItem {% ifequal s_type "mc" %}current{% endifequal %}" data-type="mc"><a href="javascript:add_search();">音乐</a></li>
-          <li class="searchItem {% ifequal s_type "cj" %}current{% endifequal %}" data-type="cj"><a href="javascript:add_search();">财院</a></li>
-            <li class="searchItem {% ifequal s_type "_all" %}current{% endifequal %}" data-type="_all"><a href="javascript:add_search();">集大</a></li>
+            <li class="searchItem {% ifequal s_type "it" %}current{% endifequal %}" data-type="it"><a href="javascript:add_search();">计算机工程学院</a></li>
+            <li class="searchItem {% ifequal s_type "marine" %}current{% endifequal %}" data-type="marine"><a href="javascript:add_search();">轮机工程学院</a></li>
+            <li class="searchItem {% ifequal s_type "art" %}current{% endifequal %}" data-type="art"><a href="javascript:add_search();">美术学院</a></li>
+           <li class="searchItem {% ifequal s_type "foreign" %}current{% endifequal %}" data-type="foreign"><a href="javascript:add_search();">外国语学院</a></li>
+        <li class="searchItem {% ifequal s_type "PE" %}current{% endifequal %}" data-type="PE"><a href="javascript:add_search();">体育学院</a></li>
+            <li class="searchItem {% ifequal s_type "ms" %}current{% endifequal %}" data-type="ms"><a href="javascript:add_search();">工商学院</a></li>
+            <li class="searchItem {% ifequal s_type "nav" %}current{% endifequal %}" data-type="nav"><a href="javascript:add_search();">航海学院</a></li>
+           <li class="searchItem {% ifequal s_type "mc" %}current{% endifequal %}" data-type="mc"><a href="javascript:add_search();">音乐学院</a></li>
+          <li class="searchItem {% ifequal s_type "cj" %}current{% endifequal %}" data-type="cj"><a href="javascript:add_search();">财经学院</a></li>
+            <li class="searchItem {% ifequal s_type "_all" %}current{% endifequal %}" data-type="_all"><a href="javascript:add_search();">所有学院</a></li>
         </ul>
     </div>
 	<div id="bd" class="ue-clear">
@@ -75,7 +83,7 @@
             <div class="historyArea">
             	
                 <div class="mySearch">
-                	<h6 style="font-size: 16px;color:black; ">我的搜索</h6>
+                	<h6>我的搜索</h6>
                     <ul class="historyList">
 
                     </ul>
@@ -91,6 +99,7 @@
 <script type="text/javascript" src="../static/js/global.js"></script>
 <script type="text/javascript" src="../static/js/pagination.js"></script>
 <script type="text/javascript">
+    var suggest_url = "{% url 'suggest' %}"
     var search_url = "{% url 'search' %}"
 
 	$('.searchList').on('click', '.searchItem', function(){
@@ -110,6 +119,35 @@
         }
       }
     }
+
+    	// 搜索建议
+    $(function(){
+        $('.searchInput').bind(' input propertychange ',function(){
+            var searchText = $(this).val();
+            var tmpHtml = ""
+            var datatype=$(".searchItem.current").attr('data-type')
+            $.ajax({
+                cache: false,
+                type: 'get',
+                dataType:'json',
+                url:suggest_url+"?s="+searchText+"&s_type="+$(".searchItem.current").attr('data-type'),
+                async: true,
+                success: function(data) {
+                    for (var i=0;i<data.length;i++){
+                          tmpHtml += '<li><a href="'+search_url+'?q='+data[i]+'&s_type='+datatype+'">'+data[i]+'</a></li>'
+                    }
+                    $(".dataList").html("")
+                    $(".dataList").append(tmpHtml);
+                    if (data.length == 0){
+                        $('.dataList').hide()
+                    }else {
+                        $('.dataList').show()
+                    }
+                }
+            });
+        } );
+    })
+
 	$('.subfieldContext .more').click(function(e){
 		var $more = $(this).parent('.subfieldContext').find('.more');
 		if($more.hasClass('show')){
@@ -159,6 +197,7 @@
 			$('#container').height($(window).height()-33);
 		}	
 	}
+   hideElement($('.dataList'), $('.searchInput'));
 </script>
 <script type="text/javascript">
     $('.searchList').on('click', '.searchItem', function(){
@@ -167,19 +206,19 @@
     });
 
 
-    // 联想下拉显示隐藏
-    $('.searchInput').on('focus', function(){
-        $('.dataList').show()
+   // 联想下拉显示隐藏
+   $('.searchInput').on('focus', function(){
+       $('.dataList').show()
     });
 
     // 联想下拉点击
     $('.dataList').on('click', 'li', function(){
         var text = $(this).text();
         $('.searchInput').val(text);
-        $('.dataList').hide()
+      //  $('.dataList').hide()
     });
 
-    hideElement($('.dataList'), $('.searchInput'));
+   hideElement($('.dataList'), $('.searchInput'));
 </script>
 <script>
     var searchArr;

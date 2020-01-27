@@ -28,7 +28,18 @@ class IndexView(View):
             topn_search_clean.append(topn_key)
         topn_search = topn_search_clean
         return render(request, "index.html", {"topn_search": topn_search})
-
+# class ResultView(View):
+#
+#     @staticmethod
+#     def get(request):
+#         topn_search_clean = []
+#         topn_search = redis_cli.zrevrangebyscore(
+#             "search_keywords_set", "+inf", "-inf", start=0, num=5)
+#         for topn_key in topn_search:
+#             topn_key = str(topn_key, encoding="utf-8")
+#             topn_search_clean.append(topn_key)
+#         topn_search = topn_search_clean
+#         return render(request, "result.html", {"topn_search": topn_search})
 
 class SearchSuggest(View):
 

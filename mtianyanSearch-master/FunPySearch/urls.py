@@ -23,6 +23,7 @@ urlpatterns = [
     path('favicon.ico', favicon_view),
     re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
     path('', IndexView.as_view(), name="index"),
+   # path('', ResultView.as_view(), name="result"),
     path('suggest/', SearchSuggest.as_view(), name="suggest"),
     path('search/', SearchView.as_view(), name="search"),
 ]
