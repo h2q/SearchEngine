@@ -1,27 +1,20 @@
 学院搜索引擎
 ===
-集美大学学院的搜索引擎。
+集美大学学院的搜索引擎。迭代16届版本。
 
-可用功能（2019-11-10）
+可用功能（截至2019-11-10）
 ===
 ```
-1.对计算机工程学院搜索
-2.对轮机学院搜索
-3.对美术学院搜索
-4.对上述学院综合搜索
+1.增加了多个学院
+2.支持拼音搜索
 ```
-如何开始使用？
+如何开始使用？（截至2019-11-10 ）
 ===
+参考链接：https://blog.csdn.net/qq_23079443/article/details/73920584
 1.爬虫端
  ```
-  1）安装ElasticSearch6.8.0,配置ElasticSearch-analysis-ik插件,安装Redis(可选配置ElasticSearch-head)
-  2）新建数据库mtianyan; Navicat导入mysql文件; 
-  3）执行 sites/es_* 配置ELasticPipeline
-  4）cd FunpySpiderSearchEngine
-     pip install -r requi.txt
-     scrapy crawl IT
-     scrapy crawl marine
-     scrapy crawl art
+  1）安装ElasticSearch6.8.0,配置ElasticSearch-analysis-ik，还有ik拼音插件,安装ElasticSearch-head
+  2）执行runMeFirst.py  加载数据
  ```
 2.网页端
 ```
